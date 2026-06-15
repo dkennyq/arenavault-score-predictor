@@ -4,10 +4,12 @@ Sistema de predicción de puntajes para Arena of Valor.
 
 ## Stack Tecnológico
 
-- **Frontend**: Angular 17+
-- **Backend**: .NET 8 Web API
+- **Frontend**: HTML/JavaScript/CSS (interfaz simple y rápida)
+- **Backend**: .NET 10 Web API con Entity Framework Core
 - **Base de Datos**: SQL Server 2022
 - **Containerización**: Docker & Docker Compose
+- **CI/CD**: GitHub Actions con deployment automático
+- **Deployment**: Soporta Railway y Azure
 
 ## Requisitos Previos
 
@@ -57,3 +59,48 @@ Para ver los logs:
 ```bash
 docker-compose logs -f
 ```
+
+## 🚀 CI/CD y Deployment
+
+Este proyecto incluye GitHub Actions workflows para:
+
+- **CI (Continuous Integration)**: Build y tests automáticos en cada push/PR
+- **CD (Continuous Deployment)**: Deployment automático a Railway o Azure en merge a `main`
+
+### Workflows Disponibles
+
+1. **`.github/workflows/ci.yml`**: Build, test y security scan
+2. **`.github/workflows/deploy-railway.yml`**: Deploy a Railway
+3. **`.github/workflows/deploy-azure.yml`**: Deploy a Azure
+
+### Configurar Deployment
+
+**Opción 1: Railway (Más rápido)**
+```bash
+# 1. Crea cuenta en railway.app
+# 2. Configura GitHub Secrets:
+#    - RAILWAY_TOKEN
+#    - RAILWAY_PROJECT_ID
+#    - RAILWAY_API_URL
+# 3. Push a main → deployment automático
+```
+
+**Opción 2: Azure (Producción)**
+```bash
+# 1. Crea cuenta Azure (con créditos estudiante)
+# 2. Configura recursos con Azure CLI
+# 3. Configura GitHub Secrets:
+#    - AZURE_CREDENTIALS
+#    - ACR_USERNAME
+#    - ACR_PASSWORD
+#    - AZURE_SQL_CONNECTION_STRING
+# 4. Push a main → deployment automático
+```
+
+## 📚 Documentación Adicional
+
+- [DEPLOYMENT.md](DEPLOYMENT.md) - Troubleshooting y deployment local
+- [DEPLOYMENT-GUIDE.md](DEPLOYMENT-GUIDE.md) - Guía paso a paso para Railway y Azure
+- [CICD.md](CICD.md) - Comparación detallada de proveedores de hosting
+- [ArenaVault-Technical-Design.md](ArenaVault-Technical-Design.md) - Diseño técnico del proyecto
+

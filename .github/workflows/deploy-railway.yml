@@ -1,0 +1,50 @@
+name: Deploy to Railway
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Railway
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install Railway CLI
+      run: npm install -g @railway/cli
+      
+    - name: Deploy to Railway
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      run: |
+        railway link ${{ secrets.RAILWAY_PROJECT_ID }}
+        railway up --service arenavault-api
+        railway up --service arenavault-web-ui
+        
+    - name: Health Check
+      run: |
+        echo "Waiting for deployment to complete..."
+        sleep 30
+        
+        # Check API health
+        API_URL="${{ secrets.RAILWAY_API_URL }}/api/health"
+        response=$(curl -s -o /dev/null -w "%{http_code}" $API_URL)
+        
+        if [ $response -eq 200 ]; then
+          echo "✅ API health check passed"
+        else
+          echo "❌ API health check failed with status $response"
+          exit 1
+        fi
+        
+    - name: Notify Success
+      if: success()
+      run: echo "🚀 Deployment to Railway successful!"
+      
+    - name: Notify Failure
+      if: failure()
+      run: echo "❌ Deployment to Railway failed!"
