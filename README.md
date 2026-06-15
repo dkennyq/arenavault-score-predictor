@@ -30,17 +30,17 @@ docker-compose up --build
 
 ## Servicios
 
-### Frontend (Angular)
+### Frontend (HTML/JS con Nginx) - arenavault-web-ui
 - Puerto: 4200
 - Contiene una landing page con verificación de conectividad
 
-### Backend (.NET API)
+### Backend (.NET API) - arenavault-api
 - Puerto: 5000
 - Endpoints:
   - GET /api/health - Health check
   - GET /api/health/database - Verificación de conexión a BD
 
-### Base de Datos (SQL Server)
+### Base de Datos (SQL Server) - arenavault-sqlserver
 - Puerto: 1433
 - Usuario: sa
 - Password: ArenaVault2024!

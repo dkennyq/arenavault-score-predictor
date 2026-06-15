@@ -68,12 +68,12 @@ arenavault-score-predictor/
    - Volumen persistente para datos
    - Variables de ambiente para configuración
 
-2. **backend**
+2. **backend** (arenavault-api)
    - Depende de que sqlserver esté healthy
    - Connection string configurada
    - CORS habilitado para desarrollo
 
-3. **frontend**
+3. **frontend** (arenavault-web-ui)
    - Depende del backend
    - Nginx configurado para servir archivos estáticos
    - Proxy configurado si es necesario
@@ -131,8 +131,8 @@ docker ps
 
 Deberías ver 3 contenedores:
 - arenavault-sqlserver
-- arenavault-backend
-- arenavault-frontend
+- arenavault-api
+- arenavault-web-ui
 
 ### 2. Verificar el backend directamente:
 ```bash
@@ -165,7 +165,7 @@ docker-compose logs sqlserver
 
 3. Verificar la conexión desde el backend:
 ```bash
-docker exec -it arenavault-backend bash
+docker exec -it arenavault-api bash
 # Dentro del contenedor, verificar variables de ambiente
 env | grep ConnectionStrings
 ```
