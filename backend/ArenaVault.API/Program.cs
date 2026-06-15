@@ -4,6 +4,10 @@ using ArenaVault.API.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure Kestrel to use PORT environment variable (Railway compatibility)
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 // Add services to the container
 builder.Services.AddDbContext<ArenaVaultDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
