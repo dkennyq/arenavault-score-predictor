@@ -6,7 +6,7 @@ Sistema de predicción de puntajes para Arena of Valor.
 
 - **Frontend**: HTML/JavaScript/CSS (interfaz simple y rápida)
 - **Backend**: .NET 10 Web API con Entity Framework Core
-- **Base de Datos**: SQL Server 2022
+- **Base de Datos**: PostgreSQL 16
 - **Containerización**: Docker & Docker Compose
 - **CI/CD**: GitHub Actions con deployment automático
 - **Deployment**: Soporta Railway y Azure
@@ -28,7 +28,7 @@ docker-compose up --build
 3. Acceder a la aplicación:
    - Frontend: http://localhost:4200
    - Backend API: http://localhost:5000
-   - SQL Server: localhost:1433 (sa / ArenaVault2024!)
+   - PostgreSQL: localhost:5432 (postgres / ArenaVault2024!)
 
 ## Servicios
 
@@ -42,11 +42,11 @@ docker-compose up --build
   - GET /api/health - Health check
   - GET /api/health/database - Verificación de conexión a BD
 
-### Base de Datos (SQL Server) - arenavault-sqlserver
-- Puerto: 1433
-- Usuario: sa
+### Base de Datos (PostgreSQL) - arenavault-postgres
+- Puerto: 5432
+- Usuario: postgres
 - Password: ArenaVault2024!
-- Database: ArenaVaultDB
+- Database: arenavaultdb
 
 ## Desarrollo
 

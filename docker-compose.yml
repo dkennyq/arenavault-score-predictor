@@ -1,23 +1,23 @@
 services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: arenavault-sqlserver
+  postgres:
+    image: postgres:16-alpine
+    container_name: arenavault-postgres
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=ArenaVault2024!
-      - MSSQL_PID=Developer
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=ArenaVault2024!
+      - POSTGRES_DB=arenavaultdb
     ports:
-      - "1433:1433"
+      - "5432:5432"
     volumes:
-      - sqlserver-data:/var/opt/mssql
+      - postgres-data:/var/lib/postgresql/data
     networks:
       - arenavault-network
     healthcheck:
-      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P ArenaVault2024! -C -Q "SELECT 1" || exit 1
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
-      retries: 10
-      start_period: 30s
+      retries: 5
+      start_period: 10s
 
   backend:
     build:
@@ -27,11 +27,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:5000
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ArenaVaultDB;User Id=sa;Password=ArenaVault2024!;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=arenavaultdb;Username=postgres;Password=ArenaVault2024!
     ports:
       - "5000:5000"
     depends_on:
-      sqlserver:
+      postgres:
         condition: service_healthy
     networks:
       - arenavault-network
@@ -53,4 +53,4 @@ networks:
     driver: bridge
 
 volumes:
-  sqlserver-data:
+  postgres-data:
