@@ -138,7 +138,10 @@
     </div>
     
     <script>
-        const API_URL = 'http://localhost:5000/api';
+        // Configuration - auto-detect environment
+        const API_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:5000/api'
+            : (window.location.protocol + '//' + window.location.hostname.replace('arenavault-web-ui', 'arenavault-api') + '/api');
         
         function showStatus(message, type, details = '') {
             const statusDiv = document.getElementById('status');
