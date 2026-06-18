@@ -41,6 +41,8 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: arenavault-web-ui
+    environment:
+      - API_URL=${API_URL:-http://localhost:5000/api}
     ports:
       - "4200:80"
     depends_on:

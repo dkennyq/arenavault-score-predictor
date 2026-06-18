@@ -18,12 +18,28 @@ Sistema de predicción de puntajes para Arena of Valor.
 
 ## Inicio Rápido
 
-1. Clonar el repositorio
-2. Ejecutar Docker Compose:
+### Paso 1: Generar el archivo .env (IMPORTANTE)
+
+El archivo `.env` contiene las URLs de la API y el puerto de PostgreSQL. **Debes generarlo antes de iniciar Docker.**
+
+**Para servidor de pruebas / remoto:**
+```bash
+# Windows (PowerShell)
+.\generate-env.ps1
+
+# Linux/Mac
+chmod +x generate-env.sh
+./generate-env.sh
+```
+
+Estos scripts detectan automáticamente la IP del servidor y un puerto PostgreSQL disponible.
+
+**Para desarrollo local:**
+El archivo `.env` ya está incluido con valores por defecto para `localhost`.
+
+### Paso 2: Ejecutar Docker Compose
 
 **Opción A - Script automático (recomendado):**
-El script detecta automáticamente si el puerto 5432 está ocupado y usa el siguiente disponible.
-
 ```bash
 # Windows (PowerShell)
 .\start-docker.ps1
@@ -43,10 +59,25 @@ docker-compose up --build
 > POSTGRES_HOST_PORT=5433 docker-compose up --build
 > ```
 
-3. Acceder a la aplicación:
-   - Frontend: http://localhost:4200
-   - Backend API: http://localhost:5000
-   - PostgreSQL: localhost:5432 (o el puerto detectado) (postgres / ArenaVault2024!)
+### Paso 3: Acceder a la aplicación
+
+- **Frontend:** http://localhost:4200 (o la IP del servidor)
+- **Backend API:** http://localhost:5000
+- **PostgreSQL:** localhost:5432 (o el puerto detectado) (postgres / ArenaVault2024!)
+
+### Configuración del archivo .env
+
+El archivo `.env` debe contener al menos estas variables:
+
+```env
+# Puerto del host para PostgreSQL (si 5432 está ocupado, usa 5433)
+POSTGRES_HOST_PORT=5432
+
+# URL del backend API (usada por el frontend para conectarse)
+# Para local: http://localhost:5000/api
+# Para servidor remoto: http://TU_IP:5000/api
+API_URL=http://localhost:5000/api
+```
 
 ## Servicios
 

@@ -137,11 +137,14 @@
         <div id="status" class="status"></div>
     </div>
     
+    <script src="env.js"></script>
     <script>
-        // Configuration - auto-detect environment
-        const API_URL = window.location.hostname === 'localhost' 
-            ? 'http://localhost:5000/api'
-            : (window.location.protocol + '//' + window.location.hostname.replace('arenavault-web-ui', 'arenavault-api') + '/api');
+        // Configuration - from environment variable or auto-detect
+        const API_URL = (window.ENV && window.ENV.API_URL) 
+            ? window.ENV.API_URL
+            : (window.location.hostname === 'localhost' 
+                ? 'http://localhost:5000/api'
+                : (window.location.protocol + '//' + window.location.hostname.replace('arenavault-web-ui', 'arenavault-api') + '/api'));
         
         function showStatus(message, type, details = '') {
             const statusDiv = document.getElementById('status');
