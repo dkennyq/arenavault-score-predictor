@@ -46,7 +46,7 @@ echo "   (La variable de entorno POSTGRES_HOST_PORT=$SELECTED_PORT se ha estable
 
 # Ejecutar docker-compose con los argumentos recibidos
 if [ $# -eq 0 ]; then
-    docker-compose up --build
+    docker compose up --build
 else
-    docker-compose "$@"
+    docker compose "$@"
 fi
