@@ -170,7 +170,7 @@
             showLoading('Verificando estado del sistema...');
             
             try {
-                const response = await fetch(`${API_URL}/health`);
+                const response = await fetch('api/health');
                 const data = await response.json();
                 
                 if (response.ok) {
