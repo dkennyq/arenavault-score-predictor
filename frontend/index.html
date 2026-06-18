@@ -129,8 +129,7 @@
             Bienvenido al sistema de predicción de puntajes para Arena of Valor
         </p>
         
-        <button class="button" onclick="checkBackend()">Verificar Backend</button>
-        <button class="button" onclick="checkDatabase()">Verificar Base de Datos</button>
+        <button class="button" onclick="checkSystem()">Verificar Sistema</button>
         
         <div class="spinner" id="spinner"></div>
         
@@ -167,8 +166,8 @@
             statusDiv.innerHTML = '<strong>' + message + '</strong>';
         }
         
-        async function checkBackend() {
-            showLoading('Conectando al backend...');
+        async function checkSystem() {
+            showLoading('Verificando estado del sistema...');
             
             try {
                 const response = await fetch(`${API_URL}/health`);
@@ -176,47 +175,25 @@
                 
                 if (response.ok) {
                     showStatus(
-                        '✅ Backend conectado exitosamente',
+                        '✅ Sistema operativo',
                         'success',
-                        `Estado: ${data.status}<br>Mensaje: ${data.message}`
+                        `<strong>API:</strong> ${data.status}<br>` +
+                        `<strong>Base de Datos:</strong> ${data.databaseStatus || 'No verificado'}<br>` +
+                        `<strong>Mensaje:</strong> ${data.message}<br>` +
+                        `<strong>Hora:</strong> ${new Date(data.timestamp).toLocaleString()}`
                     );
                 } else {
-                    showStatus('❌ Error al conectar con el backend', 'error');
+                    showStatus(
+                        '❌ Error en el sistema',
+                        'error',
+                        `Estado: ${data.status}<br>Mensaje: ${data.message}`
+                    );
                 }
             } catch (error) {
                 showStatus(
                     '❌ No se pudo conectar con el backend',
                     'error',
-                    'Asegúrate de que el servidor esté corriendo en http://localhost:5000'
-                );
-            }
-        }
-        
-        async function checkDatabase() {
-            showLoading('Verificando conexión a la base de datos...');
-            
-            try {
-                const response = await fetch(`${API_URL}/health/database`);
-                const data = await response.json();
-                
-                if (response.ok && data.status === 'Connected') {
-                    showStatus(
-                        '✅ Base de datos conectada exitosamente',
-                        'success',
-                        `${data.message}<br>Timestamp: ${new Date(data.timestamp).toLocaleString()}`
-                    );
-                } else {
-                    showStatus(
-                        '❌ Error de conexión a la base de datos',
-                        'error',
-                        data.message
-                    );
-                }
-            } catch (error) {
-                showStatus(
-                    '❌ No se pudo verificar la base de datos',
-                    'error',
-                    'Error: ' + error.message
+                    'Asegúrate de que el servidor esté corriendo y accesible.'
                 );
             }
         }

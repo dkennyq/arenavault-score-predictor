@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using ArenaVault.API.Data;
-using ArenaVault.API.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,45 +74,34 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 
-// Health check endpoint
-app.MapGet("/api/health", () =>
-{
-    return Results.Ok(new HealthResponse
-    {
-        Status = "Healthy",
-        Message = "Backend API is running",
-        Timestamp = DateTime.UtcNow
-    });
-})
-.WithName("HealthCheck");
-
-// Database connectivity check endpoint
-app.MapGet("/api/health/database", async (ArenaVaultDbContext context) =>
+// Health check endpoint - validates both API and database connectivity
+app.MapGet("/api/health", async (ArenaVaultDbContext context) =>
 {
     try
     {
+        // Validate database connectivity
         await context.Database.CanConnectAsync();
-        
-        // Ensure database is created
         await context.Database.EnsureCreatedAsync();
-        
-        return Results.Ok(new HealthResponse
+
+        return Results.Ok(new
         {
-            Status = "Connected",
-            Message = "Database connection successful! ✓",
+            Status = "Healthy",
+            DatabaseStatus = "Connected",
+            Message = "Backend API and database are running",
             Timestamp = DateTime.UtcNow
         });
     }
     catch (Exception ex)
     {
-        return Results.Ok(new HealthResponse
+        return Results.Ok(new
         {
-            Status = "Error",
-            Message = $"Database connection failed: {ex.Message}",
+            Status = "Healthy",
+            DatabaseStatus = "Error",
+            Message = $"Backend API is running, but database connection failed: {ex.Message}",
             Timestamp = DateTime.UtcNow
         });
     }
 })
-.WithName("DatabaseHealthCheck");
+.WithName("HealthCheck");
 
 app.Run();
