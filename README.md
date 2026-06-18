@@ -21,14 +21,32 @@ Sistema de predicción de puntajes para Arena of Valor.
 1. Clonar el repositorio
 2. Ejecutar Docker Compose:
 
+**Opción A - Script automático (recomendado):**
+El script detecta automáticamente si el puerto 5432 está ocupado y usa el siguiente disponible.
+
+```bash
+# Windows (PowerShell)
+.\start-docker.ps1
+
+# Linux/Mac
+chmod +x start-docker.sh
+./start-docker.sh
+```
+
+**Opción B - Docker Compose manual:**
 ```bash
 docker-compose up --build
 ```
 
+> **Nota:** Si el puerto 5432 está ocupado, puedes especificar otro puerto:
+> ```bash
+> POSTGRES_HOST_PORT=5433 docker-compose up --build
+> ```
+
 3. Acceder a la aplicación:
    - Frontend: http://localhost:4200
    - Backend API: http://localhost:5000
-   - PostgreSQL: localhost:5432 (postgres / ArenaVault2024!)
+   - PostgreSQL: localhost:5432 (o el puerto detectado) (postgres / ArenaVault2024!)
 
 ## Servicios
 
@@ -43,7 +61,7 @@ docker-compose up --build
   - GET /api/health/database - Verificación de conexión a BD
 
 ### Base de Datos (PostgreSQL) - arenavault-postgres
-- Puerto: 5432
+- Puerto: 5432 (o el puerto detectado automáticamente si está ocupado)
 - Usuario: postgres
 - Password: ArenaVault2024!
 - Database: arenavaultdb
